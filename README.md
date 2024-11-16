@@ -84,7 +84,6 @@ Before starting, ensure you have the following installed:
  
 3. **Set Up Environment Variables**
    
-    ```
    Create a .env.local file in the root directory and add the following variables:
 
 5. **env**
@@ -120,8 +119,9 @@ Before starting, ensure you have the following installed:
 
 ---
 
-##🤝 Contribution
-We welcome contributions to make the AI Study Material Generator even better! Follow these steps to contribute:
+## 🤝 Contribution
+
+-We welcome contributions to make the AI Study Material Generator even better! Follow these steps to contribute:
 
 1. **Fork the Project**
    
