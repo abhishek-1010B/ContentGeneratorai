@@ -71,20 +71,24 @@ Before starting, ensure you have the following installed:
 
 ### Installation
 
-1. **Clone the Repository**  
+1. **Clone the Repository**
+   
    ```
    git clone https://github.com/YourUsername/AI-Study-Material-Generator.git
    cd AI-Study-Material-Generator
 
 2. **Install Dependencies**
+   
    ```
    npm install
  
 3. **Set Up Environment Variables**
+   
     ```
    Create a .env.local file in the root directory and add the following variables:
 
-4. **env**
+5. **env**
+   
     ```
     NEXT_PUBLIC_CLERK_FRONTEND_API=your_clerk_frontend_api
     CLERK_API_KEY=your_clerk_api_key
@@ -94,16 +98,18 @@ Before starting, ensure you have the following installed:
     OPENAI_API_KEY=your_openai_api_key
 
 
-5. **Run the Application**
-  ```
-  npm run dev
-  ```
+6. **Run the Application**
+   
+    ```
+    npm run dev
+    ```
 
-6. **Build for Production**
+7. **Build for Production**
+   
     For deploying the app, build the project:
-  ```
-  npm run build
-  ```
+    ```
+    npm run build
+    ```
 ---
 
 ## 📚 Usage
@@ -112,27 +118,34 @@ Before starting, ensure you have the following installed:
 - **Payments**: Subscribe to premium features using Stripe.
 - **Real-Time Updates**: Enjoy fast, responsive features powered by serverless functions.
 
-##🤝 Contributing
+---
+
+##🤝 Contribution
 We welcome contributions to make the AI Study Material Generator even better! Follow these steps to contribute:
 
 1. **Fork the Project**
+   
     Create a copy of the repository by forking it.
     Create a Feature Branch
     ```
     git checkout -b feature/AmazingFeature
 
 2. **Commit Your Changes**
-  ```
-  git commit -m 'Add some AmazingFeature'
-  ```
+   
+    ```
+    git commit -m 'Add some AmazingFeature'
+    ```
 
 3. **Push to the Branch**
+   
     ```
     git push origin feature/AmazingFeature
 
 4. **Open a Pull Request**
 
     Submit your changes through a pull request for review.
+
+---
 
 ## 📜 License
 Distributed under the MIT License. See LICENSE for more details.
@@ -143,4 +156,6 @@ Project Maintainers:
 Aditya Kumar Singh
 Email: adiaparmar@gmail.com
 GitHub: Adiaparmar
+
+---
 Feel free to reach out with any questions, ideas, or feedback!
