@@ -151,11 +151,11 @@ Before starting, ensure you have the following installed:
 Distributed under the MIT License. See LICENSE for more details.
 
 ## 📞 Contact
-Project Maintainers:
+Project Maintainer:
 
-Aditya Kumar Singh
-Email: adiaparmar@gmail.com
-GitHub: Adiaparmar
+- Aditya Kumar Singh
+- Email: adiaparmar@gmail.com
+- GitHub: Adiaparmar
 
 ---
 Feel free to reach out with any questions, ideas, or feedback!
