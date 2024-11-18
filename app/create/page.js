@@ -3,10 +3,14 @@ import React, { useState } from "react";
 import SelectOption from "./_components/SelectOption";
 import { Button } from "@/components/ui/button";
 import TopicInput from "./_components/TopicInput";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { useUser } from "@clerk/nextjs";
 
 function CreateCourse() {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({});
+  const { user } = useUser();
   const handleUserInput = (fieldName, fieldValue) => {
     setFormData((prev) => ({
       ...prev,
@@ -14,6 +18,17 @@ function CreateCourse() {
     }));
     console.log(formData);
   };
+
+  const GenerateCourseOutline = async () => {
+    const courseId = uuidv4();
+    const result = await axios.post("/api/generate-course-outline", {
+      courseId: courseId,
+      ...formData,
+      createdBy: user?.primaryEmailAddress?.emailAddress,
+    });
+    console.log(result);
+  };
+
   return (
     <div className="flex flex-col items-center p-5 md:px-24 lg:px-36 mt-20">
       <h2 className="font-bold text-4xl text-primary ">
@@ -26,7 +41,7 @@ function CreateCourse() {
       <div className="mt-10">
         {step == 0 ? (
           <SelectOption
-            selectedStudyType={(value) => handleUserInput("stuydyType", value)}
+            selectedStudyType={(value) => handleUserInput("courseType", value)}
           />
         ) : (
           <TopicInput
@@ -49,7 +64,7 @@ function CreateCourse() {
         {step == 0 ? (
           <Button onClick={() => setStep(1)}>Next</Button>
         ) : (
-          <Button>Generate</Button>
+          <Button onClick={GenerateCourseOutline}>Generate</Button>
         )}
       </div>
     </div>
