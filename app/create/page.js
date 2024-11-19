@@ -6,11 +6,15 @@ import TopicInput from "./_components/TopicInput";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 function CreateCourse() {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({});
   const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
   const handleUserInput = (fieldName, fieldValue) => {
     setFormData((prev) => ({
       ...prev,
@@ -21,11 +25,14 @@ function CreateCourse() {
 
   const GenerateCourseOutline = async () => {
     const courseId = uuidv4();
+    setLoading(true);
     const result = await axios.post("/api/generate-course-outline", {
       courseId: courseId,
       ...formData,
       createdBy: user?.primaryEmailAddress?.emailAddress,
     });
+    setLoading(false);
+    router.replace("/dashboard");
     console.log(result);
   };
 
