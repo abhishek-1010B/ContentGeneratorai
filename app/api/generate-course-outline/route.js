@@ -1,6 +1,7 @@
 import { courseOutlineAIModel } from "@/configs/AiModel";
 import { db } from "@/configs/db";
 import { STUDY_MATERIAL_TABLE } from "@/configs/schema";
+import { inngest } from "@/inngest/client";
 import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
@@ -26,8 +27,17 @@ export async function POST(req) {
         createdBy: createdBy,
         courseLayout: aiResult,
       })
-      .returning({ STUDY_MATERIAL_TABLE });
-    console.log(dbResult);
+      .returning({ resp: STUDY_MATERIAL_TABLE });
+
+    //Trriger Inngest function to generate chapter notes
+    const result = await inngest.send({
+      name: "notes.generate",
+      data: {
+        course: dbResult[0].resp,
+      },
+    });
+    console.log(result);
+
     return NextResponse.json({ result: dbResult[0] });
   } catch (error) {
     console.error(error);
