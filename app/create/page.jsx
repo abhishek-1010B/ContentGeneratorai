@@ -7,6 +7,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function CreateCourse() {
   const [step, setStep] = useState(0);
@@ -33,6 +34,8 @@ function CreateCourse() {
     });
     setLoading(false);
     router.replace("/dashboard");
+    //toast Notification
+    toast("Your course content is generating, Click on Refresh Button");
     console.log(result);
   };
 
