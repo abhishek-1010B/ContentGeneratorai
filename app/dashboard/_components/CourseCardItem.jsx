@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function CourseCardItem({ course }) {
@@ -28,7 +29,9 @@ function CourseCardItem({ course }) {
           {course?.status == "Generating" ? (
             <Button disabled>Generating</Button>
           ) : (
-            <Button>View</Button>
+            <Link href={"/course/" + course?.courseId}>
+              <Button>View</Button>
+            </Link>
           )}
         </div>
       </div>

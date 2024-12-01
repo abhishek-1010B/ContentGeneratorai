@@ -10,7 +10,7 @@ export async function POST(req) {
     const PROMPT = `
         generate a study material for '${topic}' for '${courseType}' 
         and level of Difficulty will be '${difficultyLevel}' 
-        with course title, summary of course, List of chapters along with the summary for each chapter, 
+        with course title, summary of course, List of chapters along with the summary and Emoji icon for each chapter, 
         Topic list in each chapter in JSON format
       `;
     // Generate course layout using AI
