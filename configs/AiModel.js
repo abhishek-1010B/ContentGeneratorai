@@ -47,7 +47,7 @@ export const generateNotesAiModel = model.startChat({
       role: "user",
       parts: [
         {
-          text: 'Generate exam material detail content for each chapter. Make sure to include all topic point in the content, make sure to give content in HTML format (DO not add HTMLKL, Head, Body, title tag), The Chapters:{\n"chapterTitle": "Introduction to Data Structures and Algorithms",\n"chapterSummary": "This chapter introduces the fundamental concepts of data structures and algorithms, their importance in problem-solving, and how to approach algorithm analysis.",\n"topics": [\n"What are Data Structures?",\n"What are Algorithms?",\n"Big O Notation (Introduction)",\n"Common Data Structure Categories"\n]\n},',
+          text: 'Generate exam material detail content for each chapter. Make sure to include all topic point in the content, make sure to give content in HTML format (DO not add HTMLKL, Head, Body, title tag), write the content in html tags like <h3> for chapter title <p> for content <h4> for topic, The Chapters:{\n"chapterTitle": "Introduction to Data Structures and Algorithms",\n"chapterSummary": "This chapter introduces the fundamental concepts of data structures and algorithms, their importance in problem-solving, and how to approach algorithm analysis.",\n"topics": [\n"What are Data Structures?",\n"What are Algorithms?",\n"Big O Notation (Introduction)",\n"Common Data Structure Categories"\n]\n},',
         },
       ],
     },
