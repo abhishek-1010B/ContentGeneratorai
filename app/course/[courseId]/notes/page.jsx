@@ -10,6 +10,39 @@ function ViewNotes() {
   const [stepCount, setStepCount] = useState(0);
   const router = useRouter();
 
+  const customStyles = {
+    h3: {
+      fontSize: "24px",
+      fontWeight: "600",
+      color: "#333",
+      marginBottom: "10px",
+    },
+    h4: {
+      fontSize: "20px",
+      fontWeight: "500",
+      color: "#444",
+      marginBottom: "8px",
+    },
+    p: {
+      fontSize: "16px",
+      color: "#555",
+      lineHeight: "1.6",
+      marginBottom: "12px",
+    },
+    p: {
+      fontSize: "16px",
+      color: "#555",
+      lineHeight: "1.6",
+      marginBottom: "12px",
+    },
+    li: {
+      fontSize: "16px",
+      color: "#555",
+      lineHeight: "1.6",
+      marginBottom: "12px",
+    },
+  };
+
   useEffect(() => {
     GetNotes();
   }, []);
@@ -21,136 +54,91 @@ function ViewNotes() {
         studyType: "notes",
       });
 
-      console.log("Fetched Notes:", result?.data); // Log the entire response
+      // Parse the stringified `notes` field
+      const parsedNotes = result?.data?.notes.map((note) => ({
+        ...note,
+        notes: JSON.parse(note.notes),
+      }));
 
-      const parsedNotes = result?.data?.notes.map((note) => {
-        try {
-          return {
-            ...note,
-            notes: JSON.parse(note.notes), // Parse the notes field to handle as an object
-          };
-        } catch (error) {
-          console.error("Error parsing notes:", error);
-          return note;
-        }
-      });
-
+      console.log("Parsed Notes:", parsedNotes); // Debug log
       setNotes(parsedNotes || []);
     } catch (error) {
-      console.error("Error fetching notes:", error);
+      console.error("Failed to fetch notes:", error);
     }
   };
 
-  // Check if notes are available
-  if (notes.length === 0) {
-    return <div>Loading...</div>;
+  const styleContent = (content) => {
+    return content
+      .replace(
+        /<h3>/g,
+        `<h3 style="font-size:24px; font-weight:600; color:#333; margin-bottom:10px;">`
+      )
+      .replace(
+        /<h4>/g,
+        `<h4 style="font-size:20px; font-weight:500; color:#444; margin-bottom:8px;">`
+      )
+      .replace(
+        /<p>/g,
+        `<p style="font-size:16px; color:#555; line-height:1.6; margin-bottom:12px;">`
+      )
+      .replace(
+        /<li>/g,
+        `<li style="font-size:16px; color:#555; line-height:1.6; margin-bottom:12px;">`
+      );
+  };
+
+  if (!Array.isArray(notes)) {
+    return <div>No notes available</div>;
   }
 
-  return (
+  return notes.length > 0 ? (
     <div>
-      {/* Render each note */}
-      {notes.map((note, index) => (
-        <div key={index}>
-          <h3>{note.notes?.chapterTitle}</h3>
-          <p>{note.notes?.chapterSummary}</p>
-          {note.notes?.topics && (
-            <div>
-              {note.notes.topics.map((topic, idx) => (
-                <div key={idx}>
-                  <h4>{topic}</h4>
-                  {/* You can render the content for each topic here */}
-                  <p>{note.notes.content}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
+      <div className="flex gap-5 items-center">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setStepCount((prev) => Math.max(prev - 1, 0))}
+        >
+          Previous
+        </Button>
+        {notes.map((_, index) => (
+          <div
+            key={index}
+            className={`w-full h-2 rounded-full ${
+              index < stepCount ? "bg-primary" : "bg-gray-200"
+            }`}
+          ></div>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            setStepCount((prev) => Math.min(prev + 1, notes.length - 1))
+          }
+        >
+          Next
+        </Button>
+      </div>
+
+      <div className="mt-10">
+        <div
+          className="note-content"
+          dangerouslySetInnerHTML={{
+            __html: styleContent(notes[stepCount].notes.content),
+          }}
+        ></div>
+
+        {stepCount === notes.length - 1 && (
+          <div className="flex items-center gap-10 flex-col justify-center">
+            <h2>End of notes</h2>
+            <Button onClick={() => router.back()}>Go to course page</Button>
+          </div>
+        )}
+      </div>
     </div>
+  ) : (
+    <div>No notes available</div>
   );
 }
 
 export default ViewNotes;
-
-// "use client";
-// import { Button } from "@/components/ui/button";
-// import axios from "axios";
-// import { useParams, useRouter } from "next/navigation";
-// import React, { useEffect, useState } from "react";
-
-// function ViewNotes() {
-//   const { courseId } = useParams();
-//   const [notes, setNotes] = useState([]);
-//   const [stepCount, setStepCount] = useState(0);
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     GetNotes();
-//   }, []);
-
-//   const GetNotes = async () => {
-//     try {
-//       const result = await axios.post("/api/study-type", {
-//         courseId: courseId,
-//         studyType: "notes",
-//       });
-
-//       console.log("API Response:", result.data);
-//       setNotes(result?.data?.notes || []); // Adjust based on response structure
-//     } catch (error) {
-//       console.error("Failed to fetch notes:", error);
-//     }
-//   };
-
-//   if (!Array.isArray(notes)) {
-//     return <div>No notes available</div>;
-//   }
-
-//   return notes.length > 0 ? (
-//     <div>
-//       <div className="flex gap-5 items-center">
-//         <Button
-//           variant="outline"
-//           size="sm"
-//           onClick={() => setStepCount((prev) => Math.max(prev - 1, 0))}
-//         >
-//           Previous
-//         </Button>
-//         {notes.map((_, index) => (
-//           <div
-//             key={index}
-//             className={`w-full h-2 rounded-full ${
-//               index < stepCount ? "bg-primary" : "bg-gray-200"
-//             }`}
-//           ></div>
-//         ))}
-//         <Button
-//           variant="outline"
-//           size="sm"
-//           onClick={() =>
-//             setStepCount((prev) => Math.min(prev + 1, notes.length - 1))
-//           }
-//         >
-//           Next
-//         </Button>
-//       </div>
-
-//       <div className="mt-10">
-//         <div
-//           dangerouslySetInnerHTML={{ __html: notes[stepCount]?.notes || "" }}
-//         />
-
-//         {stepCount === notes.length - 1 && (
-//           <div className="flex items-center gap-10 flex-col justify-center">
-//             <h2>End of notes</h2>
-//             <Button onClick={() => router.back()}>Go to course page</Button>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   ) : (
-//     <div>No notes available</div>
-//   );
-// }
-
-// export default ViewNotes;
