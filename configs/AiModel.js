@@ -62,4 +62,26 @@ export const generateNotesAiModel = model.startChat({
   ],
 });
 
+export const GenerateStudyTypeContentAiModel = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate the flashcard on topic: Flutter Fundamentals, User Interface(UI) Development, Basic App Navigation in JSON format with front and back content, Maximum15",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n[\n  {\n    "front": "What is a Widget in Flutter?",\n    "back": "Widgets are the fundamental building blocks of Flutter\'s UI. Everything is a widget! They describe what the UI should look like based on their configuration."\n  },\n  {\n    "front": "Name three common layout widgets.",\n    "back": "1. **Container**: Provides padding, margin, decoration.\\n2. **Row**: Arranges widgets horizontally.\\n3. **Column**: Arranges widgets vertically."\n  },\n   {\n    "front": "What is the purpose of the `Scaffold` widget?",\n    "back": "The `Scaffold` widget provides the basic visual structure for a Material Design app, such as an `AppBar`, `Drawer`, and `BottomNavigationBar`."\n  },\n   {\n    "front": "What are Stateless and Stateful Widgets?",\n     "back": "**Stateless**: UI doesn\'t change after creation.\\n**Stateful**: UI can change based on user interactions or data changes."\n  },\n  {\n    "front": "How do you change the text in a `Text` widget?",\n    "back": "You pass a new `String` value to the `Text` widget\'s `data` property."\n  },\n  {\n    "front": "What widget is used for displaying an image?",\n    "back": "The `Image` widget. You can use `Image.network` for URLs or `Image.asset` for local files."\n  },\n    {\n    "front": "How to handle user input with a text field?",\n    "back": "Use a `TextField` widget. You often pair it with a `TextEditingController` to manage input."\n  },\n  {\n     "front": "What is `AppBar` and where is it located?",\n      "back": "AppBar is a toolbar displayed at the top of the screen. It is usually the child of a `Scaffold`."\n  },\n    {\n     "front": "How is navigation handled in Flutter?",\n     "back": "Primarily through the `Navigator` widget and routes. Use `Navigator.push` to navigate forward and `Navigator.pop` to go back."\n   },\n  {\n    "front": "What is a \'route\' in Flutter navigation?",\n     "back": "A route is a unique string identifier or a widget representing a screen in the app. It is used by the navigator to manage screens."\n  },\n   {\n     "front": "Explain `MaterialPageRoute`.",\n     "back": "It is the common route used for Android/iOS navigation, providing transition animations specific to each platform."\n   },\n  {\n    "front": "What is `Navigator.pushNamed` used for?",\n      "back": "It\'s used to navigate to a route by its name (String identifier) . It requires predefined routes in the `MaterialApp`."\n   },\n    {\n      "front": "What are `named routes`?",\n      "back": "Named routes are a convenient way to organize navigation. You define routes (names) and the corresponding widgets in your app\'s `MaterialApp`."\n    },\n    {\n      "front": "How do you pass data to a new screen?",\n      "back": "Pass data as an argument to the constructor of the new screen (widget) or using `arguments` property in route navigation."\n    },\n     {\n      "front": "What does `Navigator.pop` do?",\n      "back": "It removes the current screen from the navigator\'s stack and navigates back to the previous screen."\n    }\n]\n```\n',
+        },
+      ],
+    },
+  ],
+});
+
 // const result = await.send_message("INSERT_INPUT_HERE");

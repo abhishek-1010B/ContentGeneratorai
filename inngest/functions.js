@@ -3,10 +3,14 @@ import { inngest } from "./client";
 import {
   CHAPTER_NOTES_TABLE,
   STUDY_MATERIAL_TABLE,
+  STUDY_TYPE_CONTENT_TABLE,
   USER_TABLE,
 } from "@/configs/schema";
 import { eq } from "drizzle-orm";
-import { generateNotesAiModel } from "@/configs/AiModel";
+import {
+  generateNotesAiModel,
+  GenerateStudyTypeContentAiModel,
+} from "@/configs/AiModel";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world" },
@@ -95,5 +99,39 @@ export const GenerateNotes = inngest.createFunction(
         return "Success";
       }
     );
+  }
+);
+
+//Used to generate flash cards, quiz and qna
+export const GenerateStudyTypeContent = inngest.createFunction(
+  { id: "Generate Study Type Content" },
+  { event: "studyType.content" },
+
+  async ({ event, step }) => {
+    const { studyType, prompt, courseId, recordId } = event.data;
+
+    const FlashCardAiResult = await step.run(
+      "Generating FlashCard using Ai",
+      async () => {
+        const result = await GenerateStudyTypeContentAiModel.sendMessage(
+          prompt
+        );
+        const AIResult = JSON.parse(result.response.text());
+        return AIResult;
+      }
+    );
+
+    //Save the result
+    const DbResult = await step.run("Save Result to DB", async () => {
+      const result = await db
+        .update(STUDY_TYPE_CONTENT_TABLE)
+        .set({
+          content: FlashCardAiResult,
+          status: "Ready",
+        })
+        .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
+
+      return "Data Inserted";
+    });
   }
 );
