@@ -17,7 +17,7 @@ function StudyMaterialSection({ courseId, course }) {
       name: "Flashcard",
       desc: "Flashcards help to remember the concepts",
       icon: "/flashcard.png",
-      // path: "/flashcard",
+      path: "/flashcards",
       type: "flashcard",
     },
     {
