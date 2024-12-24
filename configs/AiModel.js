@@ -84,4 +84,26 @@ export const GenerateStudyTypeContentAiModel = model.startChat({
   ],
 });
 
+export const GenerateQuizAiModel = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate Quiz on topic: Flutter Fundamentals, UserInterface (UI) Development, Basic App Navigation with Question and Options along with correct answer in JSON format. In the questions array give questions in objects with three keys: question, options and answer",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n{\n  "quizTitle": "Flutter Fundamentals: UI Development & Basic Navigation",\n  "description": "Test your knowledge of Flutter UI concepts and basic app navigation.",\n  "questions": [\n    {\n      "question": "What is the primary purpose of the \'Widget\' in Flutter?",\n      "options": [\n        "To handle network requests.",\n        "To manage application state.",\n        "To describe a part of the user interface.",\n        "To perform database operations."\n      ],\n      "answer": "To describe a part of the user interface."\n    },\n    {\n      "question": "Which widget is commonly used for displaying a sequence of children in a horizontal or vertical layout?",\n      "options": [\n        "Container",\n        "Text",\n        "Row/Column",\n        "Image"\n      ],\n      "answer": "Row/Column"\n    },\n      {\n        "question": "What is the purpose of the \'BuildContext\' in Flutter?",\n        "options": [\n          "To store application preferences.",\n            "To retrieve widget configurations.",\n          "To locate the widget\'s position in the widget tree.",\n            "To manage the lifecycle of widgets."\n        ],\n        "answer": "To locate the widget\'s position in the widget tree."\n      },\n    {\n      "question": "Which widget is used to make a container with specified padding and margin?",\n      "options": [\n        "Center",\n        "Padding",\n          "SafeArea",\n        "Container"\n      ],\n      "answer": "Container"\n    },\n    {\n      "question": "What is the primary role of the \'MaterialApp\' widget in Flutter?",\n      "options": [\n        "To display images.",\n        "To manage network requests.",\n        "To configure the visual theme and overall app structure.",\n        "To handle user input."\n      ],\n      "answer": "To configure the visual theme and overall app structure."\n    },\n      {\n          "question": "Which widget is typically used for navigating between different screens in a Flutter app?",\n          "options": [\n              "Text",\n              "Container",\n              "Navigator",\n              "AlertDialog"\n          ],\n          "answer": "Navigator"\n      },\n      {\n          "question": "What is a \'StatefulWidget\' primarily used for?",\n          "options": [\n              "Displaying static content.",\n              "Managing immutable data.",\n              "Managing a dynamic state that can change over time.",\n              "Rendering simple layouts."\n\n          ],\n        "answer": "Managing a dynamic state that can change over time."\n      },\n    {\n      "question": "How do you typically pass data between screens when using the Navigator?",\n      "options": [\n        "Using global variables.",\n        "Using shared preferences.",\n          "Using arguments in the Navigator.push named route",\n        "Using local storage."\n      ],\n        "answer": "Using arguments in the Navigator.push named route"\n    },\n      {\n          "question": "What is the purpose of the \'pubspec.yaml\' file in a Flutter project?",\n          "options": [\n              "To store user preferences.",\n              "To define the project\'s dependencies and assets.",\n              "To define the project\'s layout structure.",\n              "To store the application\'s business logic."\n\n          ],\n          "answer": "To define the project\'s dependencies and assets."\n      },\n    {\n      "question": "Which widget is used to create a button that can be interacted with?",\n      "options": [\n        "Text",\n        "Row",\n        "Container",\n        "ElevatedButton"\n      ],\n      "answer": "ElevatedButton"\n    }\n\n  ]\n}\n```\n',
+        },
+      ],
+    },
+  ],
+});
+
 // const result = await.send_message("INSERT_INPUT_HERE");

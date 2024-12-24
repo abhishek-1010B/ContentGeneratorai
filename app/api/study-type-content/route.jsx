@@ -6,9 +6,13 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const { chapters, courseId, type } = await req.json();
   const PROMPT =
-    "Generate the flashcard on topic: " +
-    chapters +
-    " in JSON format with front and back content, Maximum15";
+    type == "Flashcard"
+      ? "Generate the flashcard on topic: " +
+        chapters +
+        " in JSON format with front and back content, Maximum15"
+      : "Generate Quiz on topic :" +
+        chapters +
+        " with questions and options along with the answer in JSON Format, (Max 10)";
 
   //Insert record to db, update status to generating..
   const result = await db
