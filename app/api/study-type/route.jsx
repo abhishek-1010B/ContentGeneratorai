@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const { courseId, studyType } = await req.json();
+
   if (studyType == "ALL") {
     const notes = await db
       .select()
@@ -44,6 +45,6 @@ export async function POST(req) {
         )
       );
 
-    return NextResponse.json(result[0]);
+    return NextResponse.json(result[0] ?? []);
   }
 }
