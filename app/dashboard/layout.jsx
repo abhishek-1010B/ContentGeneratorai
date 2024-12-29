@@ -1,24 +1,10 @@
-"use client";
-import React, { useState } from "react";
-import SideBar from "./_components/SideBar";
-import DashboardHeader from "./_components/DashboardHeader";
-import { CourseCountContext } from "../_context/CourseCountContext";
+import DashboardLayoutClient from "./_components/DashboardLayoutClient";
+import { ClerkProvider } from "@clerk/nextjs";
 
-function Dashboardlayout({ children }) {
-  const [totalCourse, setTotalCourse] = useState(0);
+export default function DashboardLayout({ children }) {
   return (
-    <CourseCountContext.Provider value={{ totalCourse, setTotalCourse }}>
-      <div>
-        <div className="md:w-64 hidden md:block fixed ">
-          <SideBar />
-        </div>
-        <div className="md:ml-64">
-          <DashboardHeader />
-          <div className="p-10">{children}</div>
-        </div>
-      </div>
-    </CourseCountContext.Provider>
+    <ClerkProvider dynamic={true}>
+      <DashboardLayoutClient>{children}</DashboardLayoutClient>
+    </ClerkProvider>
   );
 }
-
-export default Dashboardlayout;

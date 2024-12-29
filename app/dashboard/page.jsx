@@ -1,14 +1,16 @@
-import React from "react";
-import WelcomeBanner from "./_components/WelcomeBanner";
-import CourseList from "./_components/CourseList";
+import { Suspense } from "react";
+import ClientDashboard from "./_components/ClientDashboard";
 
-function Dashboard() {
+export default function DashboardPage() {
   return (
-    <div>
-      <WelcomeBanner />
-      <CourseList />
-    </div>
+    <Suspense
+      fallback={
+        <div className="w-full h-[60vh] flex items-center justify-center">
+          <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+        </div>
+      }
+    >
+      <ClientDashboard />
+    </Suspense>
   );
 }
-
-export default Dashboard;

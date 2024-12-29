@@ -15,7 +15,7 @@ const outfit = Outfit({
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{ baseTheme: outfit.className }} dynamic={true}>
       <html lang="en">
         <body className={outfit.className}>
           <Provider>{children}</Provider>

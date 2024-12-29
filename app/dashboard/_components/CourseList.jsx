@@ -1,6 +1,4 @@
-// _components/CourseList.jsx
 "use client";
-
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
@@ -10,29 +8,24 @@ import { RefreshCw } from "lucide-react";
 import { CourseCountContext } from "@/app/_context/CourseCountContext";
 
 function CourseList() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const [courseList, setCourseList] = useState([]);
   const [loading, setLoading] = useState(true);
   const { setTotalCourse } = useContext(CourseCountContext);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setMounted(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (mounted && user) {
+    if (isLoaded && user) {
       GetCourseList();
     }
-  }, [mounted, user]);
+  }, [isLoaded, user]);
 
   const GetCourseList = async () => {
+    if (!user?.primaryEmailAddress?.emailAddress) return;
+
     try {
       setLoading(true);
       const result = await axios.post("/api/courses", {
-        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdBy: user.primaryEmailAddress.emailAddress,
       });
       setCourseList(result.data.result || []);
       setTotalCourse(result.data.result.length);
@@ -43,7 +36,13 @@ function CourseList() {
     }
   };
 
-  if (!mounted) return null;
+  if (!isLoaded || !user) {
+    return (
+      <div className="w-full h-[40vh] flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10">
@@ -53,6 +52,7 @@ function CourseList() {
           variant="outline"
           onClick={GetCourseList}
           className="border-primary text-primary"
+          disabled={loading}
         >
           <RefreshCw className={loading ? "animate-spin" : ""} />
           {loading ? "Loading..." : "Refresh"}
@@ -61,7 +61,7 @@ function CourseList() {
       <div className="grid grid-col-2 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
         {!loading
           ? courseList?.map((course, index) => (
-              <CourseCardItem course={course} key={index} />
+              <CourseCardItem course={course} key={course.id || index} />
             ))
           : [1, 2, 3, 4, 5, 6].map((item, index) => (
               <div
