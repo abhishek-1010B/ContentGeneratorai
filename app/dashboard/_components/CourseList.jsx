@@ -9,15 +9,16 @@ import { RefreshCw } from "lucide-react";
 import { CourseCountContext } from "@/app/_context/CourseCountContext";
 
 function CourseList() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const [courseList, setCourseList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { totalCourse, setTotalCourse } = useContext(CourseCountContext);
+
   useEffect(() => {
-    if (user) {
+    if (isLoaded && user) {
       GetCourseList();
     }
-  }, [user]);
+  }, [isLoaded, user]);
 
   const GetCourseList = async () => {
     try {
@@ -25,13 +26,16 @@ function CourseList() {
       const result = await axios.post("/api/courses", {
         createdBy: user?.primaryEmailAddress?.emailAddress,
       });
-      setCourseList(result.data.result || []); // Ensure result is an array
-      setLoading(false);
+      setCourseList(result.data.result || []);
       setTotalCourse(result.data.result.length);
     } catch (error) {
       console.error("Error fetching course list:", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (!isLoaded) return null;
 
   return (
     <div className="mt-10">
@@ -42,12 +46,12 @@ function CourseList() {
           onClick={GetCourseList}
           className="border-primary text-primary"
         >
-          <RefreshCw />
-          Refresh
+          <RefreshCw className={loading ? "animate-spin" : ""} />
+          {loading ? "Loading..." : "Refresh"}
         </Button>
       </h2>
       <div className="grid grid-col-2 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
-        {loading == false
+        {!loading
           ? courseList?.map((course, index) => (
               <CourseCardItem course={course} key={index} />
             ))
@@ -55,7 +59,7 @@ function CourseList() {
               <div
                 key={index}
                 className="h-56 w-full bg-slate-200 rounded-lg animate-pulse"
-              ></div>
+              />
             ))}
       </div>
     </div>
