@@ -1,6 +1,14 @@
-// /dashboard/page.jsx
-import { DashboardContent } from "./dashboardContent";
+import React from "react";
+import WelcomeBanner from "./_components/WelcomeBanner";
+import CourseList from "./_components/CourseList";
 
-export default function DashboardPage() {
-  return <DashboardContent />;
+function Dashboard() {
+  return (
+    <div>
+      <WelcomeBanner />
+      <CourseList />
+    </div>
+  );
 }
+
+export default Dashboard;
