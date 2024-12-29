@@ -6,13 +6,19 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const { chapters, courseId, type } = await req.json();
   const PROMPT =
-    type == "Flashcard"
+    type === "Flashcard"
       ? "Generate the flashcard on topic: " +
         chapters +
         " in JSON format with front and back content, Maximum15"
-      : "Generate Quiz on topic :" +
+      : type === "Quiz"
+      ? "Generate Quiz on topic: " +
         chapters +
-        " with questions and options along with the answer in JSON Format, (Max 10)";
+        " with questions and options along with the answer in JSON Format, (Max 10)"
+      : type === "Question/Answer"
+      ? "Generate a detailed Q&A on topic: " +
+        chapters +
+        " in JSON format with each question and a detailed answer, Maximum10"
+      : "Unsupported type"; // Optional fallback to handle unsupported types
 
   //Insert record to db, update status to generating..
   const result = await db

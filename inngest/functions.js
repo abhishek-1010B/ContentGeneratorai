@@ -9,6 +9,7 @@ import {
 import { eq } from "drizzle-orm";
 import {
   generateNotesAiModel,
+  GenerateQnAAiModel,
   GenerateQuizAiModel,
   GenerateStudyTypeContentAiModel,
 } from "@/configs/AiModel";
@@ -114,10 +115,16 @@ export const GenerateStudyTypeContent = inngest.createFunction(
     const AiResult = await step.run(
       "Generating FlashCard using Ai",
       async () => {
-        const result =
-          studyType == "Flashcard"
-            ? await GenerateStudyTypeContentAiModel.sendMessage(prompt)
-            : await GenerateQuizAiModel.sendMessage(prompt);
+        let result;
+        if (studyType === "Flashcard") {
+          result = await GenerateStudyTypeContentAiModel.sendMessage(prompt);
+        } else if (studyType === "Quiz") {
+          result = await GenerateQuizAiModel.sendMessage(prompt);
+        } else if (studyType === "Question/Answer") {
+          result = await GenerateQnAAiModel.sendMessage(prompt); // Add new condition
+        } else {
+          throw new Error(`Unsupported studyType: ${studyType}`);
+        }
         const AIResult = JSON.parse(result.response.text());
         return AIResult;
       }
