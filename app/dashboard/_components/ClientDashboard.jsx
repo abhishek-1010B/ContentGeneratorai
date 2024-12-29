@@ -1,21 +1,35 @@
-// /dashboard/ClientDashboard.jsx
 "use client";
 
-import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
+import WelcomeBanner from "./WelcomeBanner";
+import ButtonsPart from "./ButtonsPart";
+import CourseList from "./CourseList";
 
-const WelcomeBanner = dynamic(() => import("./WelcomeBanner"), {
-  ssr: false,
-  loading: () => <WelcomeBannerSkeleton />,
-});
+function ClientDashboard() {
+  const [isMounted, setIsMounted] = useState(false);
 
-const ButtonsPart = dynamic(() => import("./ButtonsPart"), {
-  ssr: false,
-});
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-const CourseList = dynamic(() => import("./CourseList"), {
-  ssr: false,
-  loading: () => <CourseListSkeleton />,
-});
+  if (!isMounted) {
+    return (
+      <div>
+        <WelcomeBannerSkeleton />
+        <ButtonsPartSkeleton />
+        <CourseListSkeleton />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <WelcomeBanner />
+      <ButtonsPart />
+      <CourseList />
+    </div>
+  );
+}
 
 function WelcomeBannerSkeleton() {
   return (
@@ -25,6 +39,15 @@ function WelcomeBannerSkeleton() {
         <div className="h-8 w-48 bg-slate-300 rounded" />
         <div className="h-4 w-96 bg-slate-300 rounded" />
       </div>
+    </div>
+  );
+}
+
+function ButtonsPartSkeleton() {
+  return (
+    <div className="md:hidden w-full flex justify-between mt-6">
+      <div className="w-28 h-10 bg-slate-200 rounded animate-pulse" />
+      <div className="w-28 h-10 bg-slate-200 rounded animate-pulse" />
     </div>
   );
 }
@@ -45,12 +68,4 @@ function CourseListSkeleton() {
   );
 }
 
-export function ClientDashboard() {
-  return (
-    <div>
-      <WelcomeBanner />
-      <ButtonsPart />
-      <CourseList />
-    </div>
-  );
-}
+export default ClientDashboard;

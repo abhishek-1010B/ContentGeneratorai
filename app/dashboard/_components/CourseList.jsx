@@ -1,3 +1,4 @@
+// _components/CourseList.jsx
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -9,16 +10,21 @@ import { RefreshCw } from "lucide-react";
 import { CourseCountContext } from "@/app/_context/CourseCountContext";
 
 function CourseList() {
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
   const [courseList, setCourseList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { totalCourse, setTotalCourse } = useContext(CourseCountContext);
+  const { setTotalCourse } = useContext(CourseCountContext);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (isLoaded && user) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && user) {
       GetCourseList();
     }
-  }, [isLoaded, user]);
+  }, [mounted, user]);
 
   const GetCourseList = async () => {
     try {
@@ -35,7 +41,7 @@ function CourseList() {
     }
   };
 
-  if (!isLoaded) return null;
+  if (!mounted) return null;
 
   return (
     <div className="mt-10">
