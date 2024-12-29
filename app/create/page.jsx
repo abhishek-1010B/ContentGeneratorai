@@ -32,6 +32,7 @@ function CreateCourse() {
       ...formData,
       createdBy: user?.primaryEmailAddress?.emailAddress,
     });
+    toast.success("Pls wait your course is generating!");
     setLoading(false);
     router.replace("/dashboard");
     //toast Notification

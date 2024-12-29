@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import StepProgress from "../components/StepProgress";
 import QuizCardItem from "./_components/QuizCardItem";
+import { toast } from "sonner"; // Import toast for notifications
 
 function Quiz() {
   const { courseId } = useParams();
@@ -13,6 +14,7 @@ function Quiz() {
   const [stepCount, setStepCount] = useState(0);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState();
+  const [isDataFetched, setIsDataFetched] = useState(false); // Add state to track data fetch
 
   useEffect(() => {
     GetQuiz();
@@ -28,6 +30,12 @@ function Quiz() {
       setQuiz(questions);
       setQuizData(result.data);
 
+      // Only show toast if it's the first time the data is fetched
+      if (!isDataFetched) {
+        toast.success("Pls Refresh! If Quiz is not displayed");
+        setIsDataFetched(true); // Set the flag to true after the first toast
+      }
+
       // Set the initial correct answer if questions exist
       if (questions.length > 0) {
         setCorrectAnswer(questions[0]?.answer);
@@ -36,6 +44,7 @@ function Quiz() {
       console.log("Quiz", result.data);
     } catch (error) {
       console.error("Error fetching quiz data:", error);
+      toast.error("Failed to fetch quiz data. Please try again later.");
     }
   };
 

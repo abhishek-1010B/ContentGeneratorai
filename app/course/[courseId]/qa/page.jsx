@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import StepProgress from "../components/StepProgress";
+import { toast } from "sonner";
 
 function QnAPage() {
   const { courseId } = useParams();
@@ -27,6 +28,7 @@ function QnAPage() {
       console.error("Error fetching Q&A data:", error);
     } finally {
       setLoading(false); // Stop loading
+      toast.success("Pls Refresh! If QnA is not displayed"); // Show success toast
     }
   };
 

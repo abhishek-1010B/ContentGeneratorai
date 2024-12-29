@@ -11,7 +11,7 @@ function CourseCardItem({ course }) {
         <div className="flex  justify-between items-center">
           <Image src={"/knowledge.png"} alt="other" width={50} height={50} />
           <h2 className="text-[10px] p-1 px-2 rounded-full bg-blue-600 text-white">
-            20 Dec 2024
+            {course?.status}
           </h2>
         </div>
         <h2 className="mt-3 font-medium text-lg">
@@ -25,7 +25,7 @@ function CourseCardItem({ course }) {
           <Progress value={0} />
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex justify-end items-baseline">
           {course?.status == "Generating" ? (
             <Button disabled>Generating</Button>
           ) : (
