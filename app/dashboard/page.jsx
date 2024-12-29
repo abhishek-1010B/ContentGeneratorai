@@ -12,4 +12,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-export const dynamic = "force-dynamic"; // Prevent static rendering
