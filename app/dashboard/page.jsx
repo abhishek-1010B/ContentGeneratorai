@@ -1,6 +1,6 @@
 // /dashboard/page.jsx
-import ClientDashboard from "./_components/ClientDashboard";
+import { DashboardContent } from "./dashboardContent";
 
-export default function Dashboard() {
-  return <ClientDashboard />;
+export default function DashboardPage() {
+  return <DashboardContent />;
 }
