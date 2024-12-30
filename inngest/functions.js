@@ -28,36 +28,46 @@ export const CreateNewUser = inngest.createFunction(
   { event: "user.create" },
   async ({ event, step }) => {
     const { user } = event.data;
-    //Get event data
+
     const result = await step.run(
       "CheckUser And create new if not in DB",
       async () => {
-        //Check if the user already exist
-        const result = await db
-          .select()
-          .from(USER_TABLE)
-          .where(eq(USER_TABLE.email, user?.primaryEmailAddress?.emailAddress));
+        try {
+          // Check if the user already exists
+          const existingUser = await db
+            .select()
+            .from(USER_TABLE)
+            .where(
+              eq(USER_TABLE.email, user?.primaryEmailAddress?.emailAddress)
+            );
 
-        if (result?.length === 0) {
-          //If not , then add to db
-          const userResp = await db
-            .insert(USER_TABLE)
-            .values({
-              name: user?.fullName,
-              email: user?.primaryEmailAddress?.emailAddress,
-            })
-            .returning({ id: USER_TABLE.id });
-          return userResp;
+          if (existingUser?.length === 0) {
+            // If not, then add to db with proper field names
+            const userResp = await db
+              .insert(USER_TABLE)
+              .values({
+                userName: user?.fullName || "", // Match the schema column name
+                email: user?.primaryEmailAddress?.emailAddress || "",
+                isMember: false,
+                customerId: null,
+              })
+              .returning({ id: USER_TABLE.id });
+
+            console.log("New user created:", userResp);
+            return userResp;
+          }
+
+          console.log("Existing user found:", existingUser);
+          return existingUser;
+        } catch (error) {
+          console.error("Error in CreateNewUser:", error);
+          throw error; // Re-throw to let Inngest handle the error
         }
-        return result;
       }
     );
-    return "Success";
+
+    return { status: "Success", userId: result[0]?.id };
   }
-
-  //Step is to send welcome email notification
-
-  //Step to send email notification after 3 days once user joined
 );
 
 export const GenerateNotes = inngest.createFunction(
@@ -66,41 +76,69 @@ export const GenerateNotes = inngest.createFunction(
   async ({ event, step }) => {
     const { course } = event.data;
 
-    // Generaet notes for each chapter with ai
-    const notesResult = await step.run("Generate Chapter Notes", async () => {
-      const Chapters = course?.courseLayout?.chapters;
-      let index = 0;
-      Chapters.forEach(async (chapter) => {
-        const PROMPT =
-          "Generate exam material detail content for each chapter. Make sure to include all topic point in the content, make sure to give content in HTML format (DO not add HTML, Head, Body, title tag), The Chapters:" +
-          JSON.stringify(chapter);
+    try {
+      // Generate notes for each chapter with ai
+      const notesResult = await step.run("Generate Chapter Notes", async () => {
+        const chapters = course?.courseLayout?.chapters;
 
-        const result = await generateNotesAiModel.sendMessage(PROMPT);
-        const aiResp = result.response.text();
+        if (!chapters || !Array.isArray(chapters)) {
+          throw new Error("No chapters found in course layout");
+        }
 
-        await db.insert(CHAPTER_NOTES_TABLE).values({
-          chapterId: index,
-          courseId: course?.courseId,
-          notes: aiResp,
-        });
-        index = index + 1;
-      });
-      return "Completed";
-    });
+        // Use Promise.all to wait for all chapter notes to be generated
+        await Promise.all(
+          chapters.map(async (chapter, index) => {
+            const PROMPT =
+              "Generate exam material detail content for each chapter. Make sure to include all topic point in the content, make sure to give content in HTML format (DO not add HTML, Head, Body, title tag), The Chapters:" +
+              JSON.stringify(chapter);
 
-    //Update Status to ready
-    const updateCourseStatusResult = await step.run(
-      "Update Course Status to Ready",
-      async () => {
-        const result = await db
-          .update(STUDY_MATERIAL_TABLE)
-          .set({
-            status: "Ready",
+            const result = await generateNotesAiModel.sendMessage(PROMPT);
+            const aiResp = await result.response.text();
+
+            // Insert notes into CHAPTER_NOTES_TABLE
+            await db.insert(CHAPTER_NOTES_TABLE).values({
+              chapterId: index + 1, // Using 1-based indexing for chapters
+              courseId: course?.courseId,
+              notes: aiResp,
+            });
           })
-          .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId));
-        return "Success";
-      }
-    );
+        );
+
+        return "Completed";
+      });
+
+      // Update Status to ready in STUDY_MATERIAL_TABLE
+      const updateCourseStatusResult = await step.run(
+        "Update Course Status to Ready",
+        async () => {
+          await db
+            .update(STUDY_MATERIAL_TABLE)
+            .set({
+              status: "Ready",
+            })
+            .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId));
+          return "Success";
+        }
+      );
+
+      return {
+        status: "success",
+        notesResult,
+        updateCourseStatusResult,
+      };
+    } catch (error) {
+      console.error("Error in GenerateNotes:", error);
+
+      // Update status to error in case of failure
+      await db
+        .update(STUDY_MATERIAL_TABLE)
+        .set({
+          status: "Error",
+        })
+        .where(eq(STUDY_MATERIAL_TABLE.courseId, course?.courseId));
+
+      throw error; // Re-throw to let Inngest handle the error
+    }
   }
 );
 
