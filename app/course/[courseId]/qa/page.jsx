@@ -21,7 +21,7 @@ function QnAPage() {
       setLoading(true); // Start loading
       const result = await axios.post("/api/study-type", {
         courseId: courseId,
-        studyType: "Question/Answer",
+        studyType: "QA",
       });
       setQnaData(result?.data?.content || []);
     } catch (error) {

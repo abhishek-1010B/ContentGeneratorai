@@ -6,35 +6,62 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
+const MaterialCardItem = ({ item, studyTypeContent, course, refreshData }) => {
   const [loading, setLoading] = useState(false);
-  const GenerateContent = async () => {
-    setLoading(true);
-    let chapters = "";
-    course?.courseLayout?.chapters.forEach((chapter) => {
-      chapters = chapter?.chapterTitle + "," + chapters;
-    });
 
-    const result = await axios.post("/api/study-type-content", {
-      courseId: course?.courseId,
-      type: item.name,
-      chapters: chapters,
-    });
-    setLoading(false);
-    console.log(result);
+  const isContentReady = () => {
+    if (!studyTypeContent) return false;
 
-    refreshData(true);
-    toast("Content generated successfully");
+    const content = studyTypeContent[item.type.toLowerCase()];
+    if (!content) return false;
+
+    // For notes, check if array has items
+    if (item.type === "notes") {
+      return content.length > 0;
+    }
+
+    // For other types, check if array has items and they have content
+    return content.length > 0 && content.some((item) => item.content);
   };
+
+  const GenerateContent = async (e) => {
+    try {
+      e.preventDefault(); // Prevent navigation
+      setLoading(true);
+      let chapters = "";
+      course?.courseLayout?.chapters.forEach((chapter) => {
+        chapters = chapter?.chapterTitle + "," + chapters;
+      });
+
+      const result = await axios.post("/api/study-type-content", {
+        courseId: course?.courseId,
+        type: item.type,
+        chapters: chapters,
+      });
+
+      refreshData(true);
+      toast("Content generation started. Pls refresh after some time.");
+    } catch (error) {
+      console.error("Generation error:", error);
+      toast(
+        "Error generating content: " +
+          (error.response?.data?.message || error.message)
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const contentReady = isContentReady();
 
   return (
     <Link href={"/course/" + course?.courseId + item.path}>
       <div
         className={`border shadow-md rounded-lg p-5 flex flex-col items-center ${
-          !studyTypeContent?.[item.type]?.length > 0 && "grayscale"
+          !contentReady && "grayscale"
         }`}
       >
-        {!studyTypeContent?.[item.type]?.length > 0 ? (
+        {!contentReady ? (
           <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
             Generate
           </h2>
@@ -48,11 +75,11 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
         <h2 className="font-medium mt-3">{item.name}</h2>
         <p className="text-gray-500 text-sm text-center">{item.desc}</p>
 
-        {!studyTypeContent?.[item.type]?.length > 0 ? (
+        {!contentReady ? (
           <Button
             className="mt-3 w-full"
             variant="outline"
-            onClick={() => GenerateContent()}
+            onClick={GenerateContent}
           >
             {loading && <RefreshCcw className="animate-spin" />}
             Generate
@@ -65,6 +92,6 @@ function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
       </div>
     </Link>
   );
-}
+};
 
 export default MaterialCardItem;

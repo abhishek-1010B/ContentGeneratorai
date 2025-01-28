@@ -158,7 +158,7 @@ export const GenerateStudyTypeContent = inngest.createFunction(
           result = await GenerateStudyTypeContentAiModel.sendMessage(prompt);
         } else if (studyType === "Quiz") {
           result = await GenerateQuizAiModel.sendMessage(prompt);
-        } else if (studyType === "Question/Answer") {
+        } else if (studyType === "QA") {
           result = await GenerateQnAAiModel.sendMessage(prompt); // Add new condition
         } else {
           throw new Error(`Unsupported studyType: ${studyType}`);

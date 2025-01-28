@@ -1,10 +1,11 @@
+// StudyMaterialSection.jsx
 import React, { useEffect, useState } from "react";
-import MaterialCardItem from "./MaterialCardItem";
+import MaterialCardItem from "./MaterialCardItem"; // Make sure this path is correct
 import axios from "axios";
-import Link from "next/link";
 
-function StudyMaterialSection({ courseId, course }) {
+const StudyMaterialSection = ({ courseId, course }) => {
   const [studyTypeContent, setStudyTypeContent] = useState();
+
   const MaterialList = [
     {
       name: "Notes/Chapters",
@@ -18,21 +19,21 @@ function StudyMaterialSection({ courseId, course }) {
       desc: "Flashcards help to remember the concepts",
       icon: "/flashcard.png",
       path: "/flashcards",
-      type: "flashcard",
+      type: "Flashcard",
     },
     {
       name: "Quiz",
       desc: "Great way to test your knowledge",
       icon: "/quiz.png",
       path: "/quiz",
-      type: "quiz",
+      type: "Quiz",
     },
     {
       name: "Question/Answer",
       desc: "Help to practice your learning",
       icon: "/qa.png",
       path: "/qa",
-      type: "qa",
+      type: "QA",
     },
   ];
 
@@ -41,19 +42,24 @@ function StudyMaterialSection({ courseId, course }) {
   }, []);
 
   const GetStudyMaterial = async () => {
-    const result = await axios.post("/api/study-type", {
-      courseId: courseId,
-      studyType: "ALL",
-    });
-
-    setStudyTypeContent(result?.data);
+    try {
+      const result = await axios.post("/api/study-type", {
+        courseId: courseId,
+        studyType: "ALL",
+      });
+      setStudyTypeContent(result?.data);
+    } catch (error) {
+      console.error("Error fetching study material:", error);
+    }
   };
+
   return (
     <div className="mt-5">
       <h2 className="font-medium text-2xl">Study Material</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-3">
         {MaterialList.map((item, index) => (
           <MaterialCardItem
+            key={index}
             item={item}
             studyTypeContent={studyTypeContent}
             course={course}
@@ -63,6 +69,6 @@ function StudyMaterialSection({ courseId, course }) {
       </div>
     </div>
   );
-}
+};
 
 export default StudyMaterialSection;

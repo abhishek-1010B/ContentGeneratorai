@@ -30,7 +30,7 @@ export const STUDY_MATERIAL_TABLE = pgTable("studyMaterial", {
 export const CHAPTER_NOTES_TABLE = pgTable("chapterNotes", {
   id: serial().primaryKey(),
   courseId: varchar().notNull(),
-  chapterId: integer().notNull(),
+  chapterId: varchar().notNull(),
   notes: text(),
 });
 

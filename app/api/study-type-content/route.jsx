@@ -5,42 +5,71 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const { chapters, courseId, type } = await req.json();
-  const PROMPT =
-    type === "Flashcard"
-      ? "Generate the flashcard on topic: " +
-        chapters +
-        " in JSON format with front and back content, Maximum15"
-      : type === "Quiz"
-      ? "Generate Quiz on topic: " +
-        chapters +
-        " with questions and options along with the answer in JSON Format, (Max 10)"
-      : type === "Question/Answer"
-      ? "Generate a detailed Q&A on topic: " +
-        chapters +
-        " in JSON format with each question and a detailed answer, Maximum10"
-      : "Unsupported type"; // Optional fallback to handle unsupported types
 
-  //Insert record to db, update status to generating..
-  const result = await db
-    .insert(STUDY_TYPE_CONTENT_TABLE)
-    .values({
-      courseId: courseId,
-      type: type,
-    })
-    .returning({
-      id: STUDY_TYPE_CONTENT_TABLE.id,
+  // Handle notes generation differently
+  if (type === "notes") {
+    await inngest.send({
+      name: "notes.generate",
+      data: {
+        course: {
+          courseId: courseId,
+          courseLayout: {
+            chapters: chapters.split(",").map((chapterTitle, index) => ({
+              chapterId: index + 1,
+              chapterTitle: chapterTitle.trim(),
+            })),
+          },
+        },
+      },
     });
 
-  //Trigger Inngest Function
-  inngest.send({
-    name: "studyType.content",
-    data: {
-      studyType: type,
-      prompt: PROMPT,
-      courseId: courseId,
-      recordId: result[0].id,
-    },
-  });
+    return NextResponse.json({ message: "Notes generation started" });
+  }
 
-  return NextResponse.json(result[0].id);
+  // Get the appropriate prompt based on type
+  const getPrompt = (type) => {
+    switch (type) {
+      case "Flashcard":
+        return `Generate the flashcard on topic: ${chapters} in JSON format with front and back content, Maximum15`;
+      case "Quiz":
+        return `Generate Quiz on topic: ${chapters} with questions and options along with the answer in JSON Format, (Max 10)`;
+      case "QA":
+        return `Generate a detailed Q&A on topic: ${chapters} in JSON format with each question and a detailed answer, Maximum10`;
+      default:
+        throw new Error(`Unsupported study type: ${type}`);
+    }
+  };
+
+  try {
+    const PROMPT = getPrompt(type);
+
+    const result = await db
+      .insert(STUDY_TYPE_CONTENT_TABLE)
+      .values({
+        courseId: courseId,
+        type: type,
+        status: "Generating",
+      })
+      .returning({
+        id: STUDY_TYPE_CONTENT_TABLE.id,
+      });
+
+    await inngest.send({
+      name: "studyType.content",
+      data: {
+        studyType: type,
+        prompt: PROMPT,
+        courseId: courseId,
+        recordId: result[0].id,
+      },
+    });
+
+    return NextResponse.json({
+      id: result[0].id,
+      message: `${type} generation started`,
+    });
+  } catch (error) {
+    console.error(`Error generating ${type}:`, error);
+    return NextResponse.json({ message: error.message }, { status: 400 });
+  }
 }
