@@ -10,11 +10,13 @@ const LandingPage = () => {
       <nav className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-2">
           <Image src={"/logo.svg"} alt="logo" width={40} height={40} />
-          <span className="text-xl md:text-2xl font-bold">Content Generator</span>
+          <span className="text-xl md:text-2xl font-bold">
+            Content Generator
+          </span>
         </div>
         <div className="flex items-center space-x-2 md:space-x-4">
           <a
-            href="https://github.com/AbhishekDuggal"
+            href="https://github.com/abhishek-1010B"
             target="_blank"
             rel="noopener noreferrer"
             className="px-3 md:px-4 py-2 text-gray-700 hover:text-blue-600 rounded-lg border border-gray-200 flex items-center space-x-1 md:space-x-2 text-sm md:text-base"
@@ -36,7 +38,7 @@ const LandingPage = () => {
           <span className="px-2 py-1 text-xs text-white bg-blue-600 rounded-full">
             New
           </span>
-          <span className="text-sm">AbhishekDuggal : AI-Powered Exam Prep</span>
+          <span className="text-sm">AbhishekDuggal : AI-Powered Content Generator</span>
           <ArrowRight className="w-4 h-4" />
         </div>
       </div>
@@ -66,14 +68,14 @@ const LandingPage = () => {
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold">
                 <div className="flex flex-wrap justify-center whitespace-normal md:whitespace-nowrap">
                   <span className="text-black">AI-Powered </span>
-                  <span className="text-blue-600">Exam Prep</span>
+                  <span className="text-blue-600">Content Generator</span>
                 </div>
                 <div className="mt-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
                   Material Generator
                 </div>
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-xl px-4">
-                Your AI Exam Prep Companion: Effortless Study Material at Your
+                Your AI Content Generator Companion: Effortless Study Material at Your
                 Fingertips
               </p>
               <div className="flex justify-center mt-6 md:mt-8">

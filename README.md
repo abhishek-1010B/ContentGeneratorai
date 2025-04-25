@@ -1,7 +1,7 @@
 
-# 📚 AI Study Material Generator
+# 📚 AI Study Content Generator
 
-Welcome to the AI Study Material Generator, a cutting-edge SaaS application designed to revolutionize learning by generating personalized study materials using advanced AI technology. Built with the latest web development tools and techniques, this platform is perfect for educators, students, and anyone looking to simplify their learning process.
+Welcome to the AI Study Content Generator, a cutting-edge SaaS application designed to revolutionize learning by generating personalized study materials using advanced AI technology. Built with the latest web development tools and techniques, this platform is perfect for educators, students, and anyone looking to simplify their learning process.
 
 ---
 
@@ -21,7 +21,7 @@ Welcome to the AI Study Material Generator, a cutting-edge SaaS application desi
 
 ## 📝 About the Project
 
-The AI Study Material Generator combines AI capabilities with scalable SaaS architecture to provide a seamless learning experience. With advanced AI features powered by Gemini AI, it generates tailored study materials, quizzes, and summaries, making learning effective and efficient. Whether you're an individual learner or a large institution, this platform adapts to your needs.
+The AI Study Content Generator combines AI capabilities with scalable SaaS architecture to provide a seamless learning experience. With advanced AI features powered by Gemini AI, it generates tailored study materials, quizzes, and summaries, making learning effective and efficient. Whether you're an individual learner or a large institution, this platform adapts to your needs.
 
 ### Key Goals of the AI Study Material Generator:
 - Simplify the creation of personalized learning materials
@@ -32,7 +32,7 @@ The AI Study Material Generator combines AI capabilities with scalable SaaS arch
 
 ## ✨ Key Features
 
-- **AI-Powered Material Generation**: Uses Gemini AI for generating study materials, quizzes, and summaries.
+- **AI-Powered Content Generation**: Uses Gemini AI for generating study materials, quizzes, and summaries.
 - **Secure Authentication**: Powered by Clerk for robust user authentication.
 - **Scalable Serverless Functions**: Inngest enables efficient serverless operations.
 - **Payment Integration**: Stripe supports subscription-based payments for premium users.
@@ -151,8 +151,8 @@ Distributed under the MIT License. See LICENSE for more details.
 ## 📞 Contact
 Project Maintainer:
 
-- Aditya Kumar Singh
-- Email: AbhishekDuggal2002@gmail.com
+- Abhishek Duggal
+- Email: abhishek.duggal2002@gmail.com
 - GitHub: AbhishekDuggal
 
 ---
