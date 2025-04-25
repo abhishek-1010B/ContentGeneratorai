@@ -152,8 +152,8 @@ Distributed under the MIT License. See LICENSE for more details.
 Project Maintainer:
 
 - Aditya Kumar Singh
-- Email: adiaparmar@gmail.com
-- GitHub: Adiaparmar
+- Email: AbhishekDuggal2002@gmail.com
+- GitHub: AbhishekDuggal
 
 ---
 Feel free to reach out with any questions, ideas, or feedback!

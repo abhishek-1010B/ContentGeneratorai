@@ -10,11 +10,11 @@ const LandingPage = () => {
       <nav className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center space-x-2">
           <Image src={"/logo.svg"} alt="logo" width={40} height={40} />
-          <span className="text-xl md:text-2xl font-bold">Study Genie</span>
+          <span className="text-xl md:text-2xl font-bold">Content Generator</span>
         </div>
         <div className="flex items-center space-x-2 md:space-x-4">
           <a
-            href="https://github.com/Adiaparmar"
+            href="https://github.com/AbhishekDuggal"
             target="_blank"
             rel="noopener noreferrer"
             className="px-3 md:px-4 py-2 text-gray-700 hover:text-blue-600 rounded-lg border border-gray-200 flex items-center space-x-1 md:space-x-2 text-sm md:text-base"
@@ -36,7 +36,7 @@ const LandingPage = () => {
           <span className="px-2 py-1 text-xs text-white bg-blue-600 rounded-full">
             New
           </span>
-          <span className="text-sm">Adiaparmar : AI-Powered Exam Prep</span>
+          <span className="text-sm">AbhishekDuggal : AI-Powered Exam Prep</span>
           <ArrowRight className="w-4 h-4" />
         </div>
       </div>
@@ -102,7 +102,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer className="text-center py-4 md:py-6 text-gray-600 text-sm md:text-base">
-        Made with ❤️ by Aditya Kumar Singh
+        Made with ❤️ by Abhishek Duggal
       </footer>
     </div>
   );
