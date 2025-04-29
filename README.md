@@ -22,7 +22,7 @@ Welcome to the AI Study Content Generator, a cutting-edge SaaS application desig
 ## 📝 About the Project
 
 The AI Study Content Generator combines AI capabilities with scalable SaaS architecture to provide a seamless learning experience. With advanced AI features powered by Gemini AI, it generates tailored study materials, quizzes, and summaries, making learning effective and efficient. Whether you're an individual learner or a large institution, this platform adapts to your needs.
-
+currently the project is not delpoyed due to some issues but u can clone this project to check the output.
 ### Key Goals of the AI Study Material Generator:
 - Simplify the creation of personalized learning materials
 - Enable secure and seamless access to resources
