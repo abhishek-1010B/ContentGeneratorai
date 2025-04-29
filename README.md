@@ -87,12 +87,23 @@ Before starting, ensure you have the following installed:
 5. **env**
    
     ```
-    NEXT_PUBLIC_CLERK_FRONTEND_API=your_clerk_frontend_api
-    CLERK_API_KEY=your_clerk_api_key
-    STRIPE_SECRET_KEY=your_stripe_secret_key
-    NEON_DATABASE_URL=your_neon_database_url
-    INNGEST_API_KEY=your_inngest_api_key
-    OPENAI_API_KEY=your_openai_api_key
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+STRIPE_SECRET_KEY=your_stripe_secret_key
+# NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY=
+NEXT_PUBLIC_DATABASE_CONNECTION_STRING=
+INNGEST_API_KEY=
+NEXT_PUBLIC_GEMINI_API_KEY=
+
+
+
+
+NEXT_PUBLIC_CLERK_SIGN_UP_URL
+NEXT_PUBLIC_CLERK_SIGN_IN_URL
+
+
+
+HOST_URL
 
 
 6. **Run the Application**
